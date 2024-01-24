@@ -1,0 +1,82 @@
+<ng-template #imgPlaceholderTemplate let-orientation>
+  <svg
+    [cCardImg]="orientation ?? 'top'"
+    aria-label="Placeholder: Image cap"
+    class="docs-placeholder-img"
+    focusable="false"
+    height="180"
+    preserveAspectRatio="xMidYMid slice"
+    role="img"
+    width="100%"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title>Placeholder</title>
+    <rect fill="#868e96" height="100%" width="100%"></rect>
+    <text dominant-baseline="middle" dy=".3em" fill="#dee2e6" text-anchor="middle" x="50%" y="50%">Image cap</text>
+  </svg>
+</ng-template>
+
+
+<div>
+  <c-row>
+    <c-input-group class="mb-3">
+      <span cInputGroupText id="basic-addon1">🔍</span>
+      <input
+        aria-describedby="basic-addon1"
+        cFormControl
+        #searchBox
+        (input)="search(searchBox.value)"
+        placeholder="Search for name, email, or id"
+      />
+    </c-input-group>
+
+  </c-row>
+  <c-row [gutter]="{g: 4}" [md]="3" [xs]="1">
+
+    <c-col *ngFor="let user of users; index as i">
+      <c-card
+        (click)="onCardClicked(user)"
+        routerLink="/dashboard/users/{{user.id}}"
+        class="text-center align-items-center"
+        @fadeInOnEnter
+        (mouseenter) ="rubberState[i] = true"
+        (mouseleave) ="rubberState[i] = false"
+        [@pulse]="rubberState[i]">
+
+        <c-avatar
+          class="mt-3"
+          size="xl"
+          src="{{ user.avatar }}"
+        ></c-avatar>
+
+        <c-card-body>
+          <h5 cCardTitle>{{ user.first_name }} {{user.last_name}}</h5>
+          <p cCardText>
+            {{ user.email }}
+          </p>
+        </c-card-body>
+
+      </c-card>
+    </c-col>
+
+
+  </c-row>
+
+  <c-row class="mt-4">
+
+    <c-pagination align="center">
+      <c-page-item>
+        <a cPageLink (click)="onPreviousClicked()">Previous</a>
+      </c-page-item>
+
+      <c-page-item *ngFor="let index of range(1, pagesCount)" (click)="onPageClicked(index)">
+        <a cPageLink routerLink="./" class="{{currentPage==index ? 'active' : ''}}">{{index}}</a>
+      </c-page-item>
+
+      <c-page-item>
+        <a cPageLink (click)="onNextClicked()">Next</a>
+      </c-page-item>
+    </c-pagination>
+
+  </c-row>
+</div>
